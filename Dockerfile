@@ -1,4 +1,4 @@
-FROM golang:1.20 AS builder
+FROM golang:1.20.6 AS builder
 
 RUN mkdir /app
 ADD . /app
@@ -6,5 +6,5 @@ WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux go build -o app cmd/server/main.go
 
 FROM alpine:latest AS production
-COPY --from=build /app .
+COPY --from=builder /app .
 CMD ["./app"]
